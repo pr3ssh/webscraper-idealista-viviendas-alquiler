@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from bs4 import BeautifulSoup
 import requests
-import json
+import simplejson as json
 
 '''
 La documentacion puede ser encontrada en
@@ -21,9 +21,14 @@ def get_data_safely(list_, index, default):
     except IndexError:
         return default
 
+def parse(text):
+    return bytes(text, 'utf-8').decode('utf-8', 'strict')
+
 
 
 ## Codigo de la mision
+
+f = open('idealista_houses.json', mode='w', encoding='utf-8')
 
 root_url = "https://www.idealista.com"
 active_url = "/alquiler-viviendas/valencia/poblats-maritims/el-cabanyal-el-canyamelar/"
@@ -48,18 +53,18 @@ while True:
         except AttributeError:
             phone = ""
         idealista_houses.append({
-            'name': name,
+            'name': parse(name),
             'url': url,
-            'price': price,
-            'rooms': rooms,
-            'size': size,
-            'moreinfo': moreinfo,
-            'phone': phone
+            'price': parse(price),
+            'rooms': parse(rooms),
+            'size': parse(size),
+            'moreinfo': parse(moreinfo),
+            'phone': parse(phone)
         })
     next_url = soup.find("a", class_="icon-arrow-right-after")
     if not next_url:
         break
     active_url = next_url["href"]
     
-
-print(json.dumps(idealista_houses, indent=4))
+f.write(json.dumps(idealista_houses, indent=4, ensure_ascii=False, encoding="utf-8"))
+f.close()
