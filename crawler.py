@@ -21,9 +21,6 @@ def get_data_safely(list_, index, default):
     except IndexError:
         return default
 
-def parse(text):
-    return bytes(text, 'utf-8').decode('utf-8', 'strict')
-
 
 
 ## Codigo de la mision
@@ -53,13 +50,13 @@ while True:
         except AttributeError:
             phone = ""
         idealista_houses.append({
-            'name': parse(name),
+            'name': name,
             'url': url,
-            'price': parse(price),
-            'rooms': parse(rooms),
-            'size': parse(size),
-            'moreinfo': parse(moreinfo),
-            'phone': parse(phone)
+            'price': price,
+            'rooms': rooms,
+            'size': size,
+            'moreinfo': moreinfo,
+            'phone': phone
         })
     next_url = soup.find("a", class_="icon-arrow-right-after")
     if not next_url:
