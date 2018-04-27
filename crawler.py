@@ -10,7 +10,7 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/
 
 '''
 LA MISION:
-Rescatar los datos basicos de los pisos de alquiler del Cabanyal (Valencia)
+Rescatar los datos basicos de los pisos de alquiler del Centro de Huelva
 encontrados en Idealista.es (ejercicio de demostracion)
 '''
 
@@ -28,10 +28,16 @@ def get_data_safely(list_, index, default):
 f = open('idealista_houses.json', mode='w', encoding='utf-8')
 
 root_url = "https://www.idealista.com"
-active_url = "/alquiler-viviendas/valencia/poblats-maritims/el-cabanyal-el-canyamelar/"
+active_url = "/alquiler-viviendas/huelva/centro/"
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.106 Safari/537.36',
+    'set-cookie': '_pxCaptcha=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;'
+}
+
 idealista_houses = list()
 while True:
-    req  = requests.get(root_url+active_url)
+    req  = requests.get(root_url+active_url, headers=headers)
     data = req.text
     soup = BeautifulSoup(data, "html.parser")
     houses = soup.find_all("div", class_="item")
